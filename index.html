@@ -56,7 +56,7 @@
     <ol>
         <li>Работает поверх HTTP</li>
         <li>Каждая таблица - ресурс</li>
-        <li>Правила формирования урлов и методы работы с объектами зафиксированы</li>
+        <li>Правила адресации и методы работы с объектами зафиксированы</li>
     </ol>
 
     <table>
@@ -267,8 +267,8 @@ type User {
 {
     posts(<b>userId: 42</b>) {
         title
-        author {
-            name
+        comments(<b>visible: true</b>) {
+            title
         }
     }
 }
@@ -279,9 +279,9 @@ type User {
 {
     posts: [{
         title: "Первый пост",
-        author: {
-            name: "Николай"
-        }
+        comments: [{
+            title: "+1"
+        }]
     }]
 }
 </pre>
@@ -335,22 +335,11 @@ type User {
     </table>
 </section>
 
-<section class="slide" id="see-more">
-    <h2 class="shout">
-        <img src="pictures/logo.svg" alt="Shower logo">
-        <a href="https://github.com/shower/shower">See more on GitHub</a>
-    </h2>
-    <style>
-        #see-more h2 {
-            font-size: 100px
-        }
-
-        #see-more img {
-            width: 0.72em;
-            height: 0.72em;
-        }
-    </style>
+<section class="slide">
+    <h2 class="place center">Всё</h2>
 </section>
+
+
 <p class="badge">
     <a href="https://github.com/shower/shower">Fork me on GitHub</a>
 </p>

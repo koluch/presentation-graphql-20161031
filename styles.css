@@ -1,0 +1,35 @@
+#cover {
+    background: #1d1d1d;
+}
+
+span.code {
+    font-family: monospace;
+}
+
+.my li.active {
+    font-weight: bold;
+}
+
+.my .slide {
+    padding: 100px 100px 0 100px;
+}
+
+.slide pre {
+    white-space: pre;
+    font-size: 1.2rem;
+    line-height: 2rem;
+    font-family: monospace;
+}
+
+.when-active {
+    display: none;
+}
+
+.active .when-active {
+    display: block;
+}
+
+textarea.code {
+    font-family: monospace;
+    font-size: 1.2rem
+}

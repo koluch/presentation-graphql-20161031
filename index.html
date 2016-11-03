@@ -430,6 +430,59 @@ app<span style='color:#808030; '>.</span>use<span style='color:#808030; '>(</spa
 </pre>
 </section>
 
+
+
+<section class="slide">
+    <h2>Реализация: пример использования</h2>
+    <p>GET http://localhost:3000/graphql?query=[query]</p>
+    <table>
+        <tr>
+            <td valign="top" style="vertical-align: top">
+<textarea  id="request" class="code" rows="15" cols="30">{
+    posts {
+        title
+    }
+}</textarea>
+                <br/><button id="submit">Отправить</button>
+            </td >
+            <td width="50%" valign="top"  style="vertical-align: top">
+                <textarea id="response" class="code" rows="15" cols="55"></textarea>
+            </td>
+        </tr>
+    </table>
+
+    <script type="application/javascript">
+        document.getElementById("request").addEventListener('keydown', (e) => {
+            e.stopImmediatePropagation()
+        })
+        document.getElementById("request").addEventListener('keyup', (e) => {
+            e.stopImmediatePropagation()
+        })
+        document.getElementById("request").addEventListener('keypress', (e) => {
+            e.stopImmediatePropagation()
+        })
+        document.getElementById('submit').addEventListener('click', (e) => {
+            const query = document.getElementById("request").value.replace(/\s*\n\s*/g, " ")
+            fetch(`http://localhost:3000/graphql?query=${query}`)
+                .then((resp) => resp.text())
+                .then((payloadStr) => {
+                    const payload = JSON.parse(payloadStr)
+                    console.log('payload', payload)
+                    if (payload.data) {
+                        document.getElementById("response").value = JSON.stringify(payload.data, null, 4)
+                    }
+                    else if (payload.errors){
+                        document.getElementById("response").value = JSON.stringify(payload.errors, null, 4)
+                    }
+                })
+                .catch((e) => {
+                    document.getElementById("response").value = ''
+                    throw e
+                })
+        })
+    </script>
+</section>
+
 <section class="slide">
     <h2 class="place center">Всё</h2>
 </section>

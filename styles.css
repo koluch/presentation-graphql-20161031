@@ -31,5 +31,6 @@ span.code {
 
 textarea.code {
     font-family: monospace;
-    font-size: 1.2rem
+    font-size: 1rem;
+    border: 1px solid black;
 }

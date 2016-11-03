@@ -32,7 +32,11 @@ const PostType = ObjectType({
         title: {type: String},
         user: {type: NonNull(UserType),},
         body: {type: NonNull(String),},
-        comments: {type: NonNull(List(NonNull(CommentType))),},
+        comments: {type: NonNull(
+            List(
+                NonNull(CommentType)
+            )
+        ),},
     }),
 });
 

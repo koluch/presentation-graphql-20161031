@@ -117,10 +117,6 @@
         </td>
     </tr>
 </table>
-
-
-
-
 </section>
 
 <section class="slide">
@@ -177,9 +173,9 @@
 
 <section class="slide">
     <h2>Принципы GraphQL</h2>
-    <ol>
+    <ul>
         <li class="active">Структура ответа задает клиент при запросе</li>
-    </ol>
+    </ul>
     <table>
         <tr>
             <td>
@@ -212,11 +208,8 @@
 
 <section class="slide">
     <h2>Принципы GraphQL</h2>
-    <ol>
-        <li>Структура ответа задает клиент при запросе</li>
+    <ul>
         <li class="active">Статическая типизация</li>
-
-
         <table>
             <tr>
                 <td width="50%">
@@ -237,7 +230,9 @@ type Query {
 type Post {
   id: Int!
   title: String
-  user_id: User!
+  body: String!
+  user: User!
+  comments: [Comment!]!
 }
 
 type User {
@@ -248,14 +243,12 @@ type User {
                 </td>
             </tr>
         </table>
-    </ol>
+    </ul>
 </section>
 
 <section class="slide">
     <h2>Принципы GraphQL</h2>
-    <ol>
-        <li>Структура ответа задает клиент при запросе</li>
-        <li>Статическая типизация</li>
+    <ul>
         <li class="active">
             Параметризируемость
 
@@ -288,18 +281,15 @@ type User {
                 </td>
             </tr>
         </table>
-    </ol>
+    </ul>
 </section>
 
 
 <section class="slide">
     <h2>Принципы GraphQL</h2>
-    <ol>
-        <li>Структура ответа задает клиент при запросе</li>
-        <li>Статическая типизация</li>
-        <li>Параметризируемость</li>
+    <ul>
         <li class="active">Независимость от транспорта</li>
-    </ol>
+    </ul>
     <p>Стандарт использует собственный язык запросов и типизации,
         поэтому для транспортировки данных может быть использован
         любой подходящий протокол (HTTP, Sockets, WebSockets, etc)</p>
@@ -315,24 +305,129 @@ type User {
 </section>
 
 <section class="slide">
-    <h2>Пример</h2>
+    <h2>Реализация: описание типов</h2>
     <table>
         <tr>
-            <td>
-                <textarea class="code" rows="15" cols="30">{
-    posts {
-        title
-        author {
-            name
-        }
-    }
-}</textarea>
-                <button>Отправить</button>
+            <td valign="top" style="vertical-align: top">
+<pre>
+type User {
+  id: Int!
+  name: String!
+}
+</pre>
             </td>
             <td width="50%">
+ <pre style='color:#000000;background:#ffffff;'><span style='color:#800000; font-weight:bold; '>const</span> UserType <span style='color:#808030; '>=</span> ObjectType<span style='color:#808030; '>(</span><span style='color:#800080; '>{</span>
+    name<span style='color:#800080; '>:</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>UserType</span><span style='color:#800000; '>'</span><span style='color:#808030; '>,</span>
+    fields<span style='color:#800080; '>:</span> <span style='color:#808030; '>(</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>=</span><span style='color:#808030; '>></span> <span style='color:#808030; '>(</span><span style='color:#800080; '>{</span>
+        id<span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>type<span style='color:#800080; '>:</span> NonNull<span style='color:#808030; '>(</span>Int<span style='color:#808030; '>)</span><span style='color:#800080; '>}</span><span style='color:#808030; '>,</span>
+        name<span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>type<span style='color:#800080; '>:</span> NonNull<span style='color:#808030; '>(</span><span style='color:#797997; '>String</span><span style='color:#808030; '>)</span><span style='color:#800080; '>}</span><span style='color:#808030; '>,</span>
+    <span style='color:#800080; '>}</span><span style='color:#808030; '>)</span><span style='color:#808030; '>,</span>
+<span style='color:#800080; '>}</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+</pre>
             </td>
         </tr>
     </table>
+</section>
+
+<section class="slide">
+    <h2>Реализация: описание типов</h2>
+    <table>
+        <tr>
+            <td  width="50%" style="vertical-align: top">
+<pre>
+type Post {
+  id: Int!
+  title: String
+  body: String!
+  user: User!
+  comments: [Comment!]!
+}
+</pre>
+            </td>
+            <td width="50%">
+<pre style='color:#000000;background:#ffffff;'><span style='color:#800000; font-weight:bold; '>const</span> PostType <span style='color:#808030; '>=</span> ObjectType<span style='color:#808030; '>(</span><span style='color:#800080; '>{</span>
+    name<span style='color:#800080; '>:</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>PostType</span><span style='color:#800000; '>'</span><span style='color:#808030; '>,</span>
+    fields<span style='color:#800080; '>:</span> <span style='color:#808030; '>(</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>=</span><span style='color:#808030; '>></span> <span style='color:#808030; '>(</span><span style='color:#800080; '>{</span>
+        id<span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>type<span style='color:#800080; '>:</span> NonNull<span style='color:#808030; '>(</span>Int<span style='color:#808030; '>)</span><span style='color:#808030; '>,</span><span style='color:#800080; '>}</span><span style='color:#808030; '>,</span>
+        title<span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>type<span style='color:#800080; '>:</span> <span style='color:#797997; '>String</span><span style='color:#800080; '>}</span><span style='color:#808030; '>,</span>
+        user<span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>type<span style='color:#800080; '>:</span> NonNull<span style='color:#808030; '>(</span>UserType<span style='color:#808030; '>)</span><span style='color:#808030; '>,</span><span style='color:#800080; '>}</span><span style='color:#808030; '>,</span>
+        body<span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>type<span style='color:#800080; '>:</span> NonNull<span style='color:#808030; '>(</span><span style='color:#797997; '>String</span><span style='color:#808030; '>)</span><span style='color:#808030; '>,</span><span style='color:#800080; '>}</span><span style='color:#808030; '>,</span>
+        comments<span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>type<span style='color:#800080; '>:</span> NonNull<span style='color:#808030; '>(</span>
+            List<span style='color:#808030; '>(</span>
+                NonNull<span style='color:#808030; '>(</span>CommentType<span style='color:#808030; '>)</span>
+            <span style='color:#808030; '>)</span>
+        <span style='color:#808030; '>)</span><span style='color:#808030; '>,</span><span style='color:#800080; '>}</span><span style='color:#808030; '>,</span>
+    <span style='color:#800080; '>}</span><span style='color:#808030; '>)</span><span style='color:#808030; '>,</span>
+<span style='color:#800080; '>}</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+</pre>
+            </td>
+        </tr>
+    </table>
+</section>
+
+<section class="slide">
+    <h2>Реализация: описание типов</h2>
+    <table>
+        <tr>
+            <td  width="50%" style="vertical-align: top">
+<pre>
+type Comment {
+  id: Int!
+  body: String!
+  user: User!
+  post: Post!
+}
+</pre>
+            </td>
+            <td width="50%">
+<pre style='color:#000000;background:#ffffff;'><span style='color:#800000; font-weight:bold; '>const</span> CommentType <span style='color:#808030; '>=</span> ObjectType<span style='color:#808030; '>(</span><span style='color:#800080; '>{</span>
+    name<span style='color:#800080; '>:</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>CommentType</span><span style='color:#800000; '>'</span><span style='color:#808030; '>,</span>
+    fields<span style='color:#800080; '>:</span> <span style='color:#808030; '>(</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>=</span><span style='color:#808030; '>></span> <span style='color:#808030; '>(</span><span style='color:#800080; '>{</span>
+        id<span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>type<span style='color:#800080; '>:</span> NonNull<span style='color:#808030; '>(</span>Int<span style='color:#808030; '>)</span><span style='color:#800080; '>}</span><span style='color:#808030; '>,</span>
+        body<span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>type<span style='color:#800080; '>:</span> NonNull<span style='color:#808030; '>(</span><span style='color:#797997; '>String</span><span style='color:#808030; '>)</span><span style='color:#800080; '>}</span><span style='color:#808030; '>,</span>
+        user<span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>type<span style='color:#800080; '>:</span> NonNull<span style='color:#808030; '>(</span>UserType<span style='color:#808030; '>)</span><span style='color:#808030; '>,</span><span style='color:#800080; '>}</span><span style='color:#808030; '>,</span>
+        post<span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>type<span style='color:#800080; '>:</span> NonNull<span style='color:#808030; '>(</span>PostType<span style='color:#808030; '>)</span><span style='color:#808030; '>,</span><span style='color:#800080; '>}</span><span style='color:#808030; '>,</span>
+    <span style='color:#800080; '>}</span><span style='color:#808030; '>)</span><span style='color:#808030; '>,</span>
+<span style='color:#800080; '>}</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+</pre>
+            </td>
+        </tr>
+    </table>
+</section>
+
+<section class="slide">
+    <h2>Реализация: описание типов</h2>
+<pre style='color:#000000;background:#ffffff;'><span style='color:#800000; font-weight:bold; '>const</span> QueryType <span style='color:#808030; '>=</span> ObjectType<span style='color:#808030; '>(</span><span style='color:#800080; '>{</span>
+    name<span style='color:#800080; '>:</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>QueryType</span><span style='color:#800000; '>'</span><span style='color:#808030; '>,</span>
+    fields<span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>
+        posts<span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>
+            type<span style='color:#800080; '>:</span> List<span style='color:#808030; '>(</span>PostType<span style='color:#808030; '>)</span><span style='color:#808030; '>,</span>
+            resolve<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span> <span style='color:#800080; '>{</span>
+                <span style='color:#800000; font-weight:bold; '>const</span> <span style='color:#800080; '>{</span>posts<span style='color:#808030; '>,</span> users<span style='color:#808030; '>,</span> comments<span style='color:#800080; '>}</span> <span style='color:#808030; '>=</span> data
+                <span style='color:#800000; font-weight:bold; '>return</span> posts<span style='color:#808030; '>.</span>map<span style='color:#808030; '>(</span><span style='color:#808030; '>(</span>post<span style='color:#808030; '>)</span> <span style='color:#808030; '>=</span><span style='color:#808030; '>></span> <span style='color:#797997; '>Object</span><span style='color:#808030; '>.</span>assign<span style='color:#808030; '>(</span><span style='color:#800080; '>{</span><span style='color:#800080; '>}</span><span style='color:#808030; '>,</span> post<span style='color:#808030; '>,</span> <span style='color:#800080; '>{</span>
+                    user<span style='color:#800080; '>:</span> users<span style='color:#808030; '>.</span>filter<span style='color:#808030; '>(</span><span style='color:#808030; '>(</span>x<span style='color:#808030; '>)</span> <span style='color:#808030; '>=</span><span style='color:#808030; '>></span> x<span style='color:#808030; '>.</span>id <span style='color:#808030; '>===</span> post<span style='color:#808030; '>.</span>userId<span style='color:#808030; '>)</span><span style='color:#808030; '>[</span><span style='color:#008c00; '>0</span><span style='color:#808030; '>]</span><span style='color:#808030; '>,</span>
+                    comments<span style='color:#800080; '>:</span> comments<span style='color:#808030; '>.</span>filter<span style='color:#808030; '>(</span><span style='color:#808030; '>(</span>x<span style='color:#808030; '>)</span> <span style='color:#808030; '>=</span><span style='color:#808030; '>></span> x<span style='color:#808030; '>.</span>postId <span style='color:#808030; '>===</span> post<span style='color:#808030; '>.</span>id<span style='color:#808030; '>)</span>
+                <span style='color:#800080; '>}</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span>
+            <span style='color:#800080; '>}</span>
+        <span style='color:#800080; '>}</span><span style='color:#808030; '>, ...</span>
+    <span style='color:#800080; '>}})</span>
+</pre>
+</section>
+
+<section class="slide">
+    <h2>Реализация: подключение к Express</h2>
+<pre style='color:#000000;background:#ffffff;'><span style='color:#800000; font-weight:bold; '>const</span> express <span style='color:#808030; '>=</span> require<span style='color:#808030; '>(</span><span style='color:#800000; '>'</span><span style='color:#0000e6; '>express</span><span style='color:#800000; '>'</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+<span style='color:#800000; font-weight:bold; '>const</span> graphqlHTTP <span style='color:#808030; '>=</span> require<span style='color:#808030; '>(</span><span style='color:#800000; '>'</span><span style='color:#0000e6; '>express-graphql</span><span style='color:#800000; '>'</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+
+<span style='color:#800000; font-weight:bold; '>var</span> app <span style='color:#808030; '>=</span> express<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+app<span style='color:#808030; '>.</span>use<span style='color:#808030; '>(</span><span style='color:#800000; '>'</span><span style='color:#0000e6; '>/graphql</span><span style='color:#800000; '>'</span><span style='color:#808030; '>,</span> graphqlHTTP<span style='color:#808030; '>(</span><span style='color:#800080; '>{</span>
+    schema<span style='color:#800080; '>:</span> Schema<span style='color:#808030; '>(</span><span style='color:#800080; '>{</span>
+        query<span style='color:#800080; '>:</span> QueryType
+    <span style='color:#800080; '>}</span><span style='color:#808030; '>)</span><span style='color:#808030; '>,</span>
+    graphiql<span style='color:#800080; '>:</span> <span style='color:#0f4d75; '>true</span>
+<span style='color:#800080; '>}</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+</pre>
 </section>
 
 <section class="slide">

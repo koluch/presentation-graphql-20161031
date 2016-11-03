@@ -30,6 +30,16 @@ const data = {
 const QueryType = ObjectType({
     name: 'QueryType',
     fields: {
+        posts: {
+            type: List(PostType),
+            resolve() {
+                const {posts, users, comments} = data
+                return posts.map((post) => Object.assign({}, post, {
+                    user: users.filter((x) => x.id === post.userId)[0],
+                    comments: comments.filter((x) => x.postId === post.id)
+                }))
+            }
+        },
         users: {
             type: List(UserType),
             resolve() {
@@ -43,16 +53,6 @@ const QueryType = ObjectType({
                 return comments.map((comment) => merge(comment, {
                     user: find(users, (user) => user.id === comment.userId ),
                     post: find(posts, (post) => post.id === comment.postId ),
-                }))
-            }
-        },
-        posts: {
-            type: List(PostType),
-            resolve() {
-                const {posts, users, comments} = data
-                return posts.map((post) => Object.assign({}, post, {
-                    user: users.filter((x) => x.id === post.userId)[0],
-                    comments: comments.filter((x) => x.postId === post.id)
                 }))
             }
         },

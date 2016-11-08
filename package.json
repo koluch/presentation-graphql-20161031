@@ -52,7 +52,7 @@
     "publish": "gulp publish",
     "test": "npm run prepare && ls prepared && npm run archive && path-exists archive.zip",
     "postinstall": "cd server && npm install",
-    "start": "./node_modules/.bin/static-server -p 3001",
-    "all": "./node_modules/.bin/concurrently -n pr,server -p \"[{name}]\" --kill-others -c green,red \"npm run start\" \"cd server && npm run start\""
+    "start": "./node_modules/.bin/static-server -p 3000",
+    "all": "./node_modules/.bin/concurrently -n pr,server -p \"[{name}]\" --kill-others -c green,red \"npm run start\" \"cd server && PORT=3001 npm run start\""
   }
 }

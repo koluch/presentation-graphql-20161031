@@ -464,7 +464,7 @@ app<span style='color:#808030; '>.</span>use<span style='color:#808030; '>(</spa
         })
         document.getElementById('submit').addEventListener('click', (e) => {
             const query = document.getElementById("request").value.replace(/\s*\n\s*/g, " ")
-            fetch(`http://localhost:3000/graphql?query=${query}`)
+            fetch(`http://localhost:3001/graphql?query=${query}`)
                 .then((resp) => resp.text())
                 .then((payloadStr) => {
                     const payload = JSON.parse(payloadStr)

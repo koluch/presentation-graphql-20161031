@@ -3,16 +3,16 @@
   "description": "Shower HTML presentation engine",
   "version": "2.1.4",
   "author": {
-    "name": "Vadim Makeev",
-    "url": "http://pepelsbey.net/"
+    "name": "Nikolai Mavrenkov",
+    "url": "http://koluch.ru"
   },
-  "homepage": "https://github.com/shower/shower",
+  "homepage": "https://github.com/koluch/presentation-graphql-20161031",
   "repository": {
     "type": "git",
-    "url": "git://github.com/shower/shower.git"
+    "url": "git://github.com/koluch/presentation-graphql-20161031.git"
   },
   "bugs": {
-    "url": "http://github.com/shower/shower/issues"
+    "url": "http://github.com/koluch/presentation-graphql-20161031/issues"
   },
   "license": "MIT",
   "keywords": [
@@ -32,6 +32,7 @@
     "shower-ribbon": "^2.0.7"
   },
   "devDependencies": {
+    "concurrently": "^3.1.0",
     "del": "^2.2.1",
     "fs": "0.0.2",
     "gulp": "^3.9.1",
@@ -42,12 +43,16 @@
     "gulp-zip": "^3.2.0",
     "merge-stream": "^1.0.0",
     "path-exists-cli": "^1.0.0",
-    "run-sequence": "^1.2.2"
+    "run-sequence": "^1.2.2",
+    "static-server": "^2.0.3"
   },
   "scripts": {
     "prepare": "gulp prepare",
     "archive": "gulp archive",
     "publish": "gulp publish",
-    "test": "npm run prepare && ls prepared && npm run archive && path-exists archive.zip"
+    "test": "npm run prepare && ls prepared && npm run archive && path-exists archive.zip",
+    "postinstall": "cd server && npm install",
+    "start": "./node_modules/.bin/static-server -p 3001",
+    "all": "./node_modules/.bin/concurrently -n pr,server -p \"[{name}]\" --kill-others -c green,red \"npm run start\" \"cd server && npm run start\""
   }
 }

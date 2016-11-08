@@ -1,5 +1,7 @@
 node_modules
 prepared
 archive.zip
-.idea
-server/npm-debug.log
+.idea/**
+**/*.iml
+**/npm-debug.log
+**/npm-debug.log.*
